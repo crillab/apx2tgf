@@ -1,0 +1,12 @@
+[package]
+name = "apx2tgf"
+version = "0.1.0"
+authors = ["Lonca Emmanuel <emmanuel.lonca@univ-artois.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.33"
+crusti_app_helper = { path = "local_crates/crusti_app_helper/" }
+crusti_arg = { path = "local_crates/crusti_arg/" }
