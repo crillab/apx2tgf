@@ -14,5 +14,5 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-mod translate_command;
-pub(crate) use translate_command::TranslateCommand;
+mod framework_command;
+pub(crate) use framework_command::FrameworkCommand;

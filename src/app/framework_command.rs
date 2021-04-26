@@ -22,19 +22,19 @@ use std::{
     path::PathBuf,
 };
 
-pub(crate) struct TranslateCommand;
+pub(crate) struct FrameworkCommand;
 
-const CMD_NAME: &str = "translate";
+const CMD_NAME: &str = "framework";
 
 const ARG_INPUT: &str = "INPUT";
 
-impl TranslateCommand {
+impl FrameworkCommand {
     pub fn new() -> Self {
-        TranslateCommand
+        FrameworkCommand
     }
 }
 
-impl<'a> Command<'a> for TranslateCommand {
+impl<'a> Command<'a> for FrameworkCommand {
     fn name(&self) -> &str {
         CMD_NAME
     }

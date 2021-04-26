@@ -16,7 +16,7 @@
 
 mod app;
 
-use app::TranslateCommand;
+use app::FrameworkCommand;
 use crusti_app_helper::{AppHelper, Command, LicenseCommand};
 
 fn main() {
@@ -27,7 +27,7 @@ fn main() {
         "An app to translate APX into TGF.",
     );
     let commands: Vec<Box<dyn Command>> = vec![
-        Box::new(TranslateCommand::new()),
+        Box::new(FrameworkCommand::new()),
         Box::new(LicenseCommand::new(include_str!("../LICENSE").to_string())),
     ];
     for c in commands {
