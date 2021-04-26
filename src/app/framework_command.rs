@@ -19,6 +19,7 @@ use crusti_app_helper::{info, App, AppSettings, Arg, ArgMatches, Command, SubCom
 use crusti_arg::{AspartixReader, TGFWriter};
 use std::{
     fs::{self, File},
+    io::Write,
     path::PathBuf,
 };
 
@@ -27,6 +28,7 @@ pub(crate) struct FrameworkCommand;
 const CMD_NAME: &str = "framework";
 
 const ARG_INPUT: &str = "INPUT";
+const ARG_OUTPUT: &str = "OUTPUT";
 
 impl FrameworkCommand {
     pub fn new() -> Self {
@@ -51,21 +53,42 @@ impl<'a> Command<'a> for FrameworkCommand {
                     .help("sets the APX input file")
                     .required(true),
             )
+            .arg(
+                Arg::with_name(ARG_OUTPUT)
+                    .long("output")
+                    .short("o")
+                    .takes_value(true)
+                    .help("sets the TGF output file")
+            )
     }
 
     fn execute(&self, arg_matches: &ArgMatches<'_>) -> Result<()> {
         let file_path = arg_matches.value_of(ARG_INPUT).unwrap();
-        info!(
-            "reading input file {}",
-            fs::canonicalize(&PathBuf::from(file_path))
-                .unwrap()
-                .display()
-        );
+        info!("reading input file {}", canonicalize(file_path));
         let mut file = File::open(file_path)
             .with_context(|| format!(r#"while opening file "{}""#, file_path))?;
         let reader = AspartixReader::default();
         let af = reader.read(&mut file)?;
         let writer = TGFWriter::new();
-        writer.write(&af, &mut std::io::stdout())
+        let mut output: Box<dyn Write> = match arg_matches.value_of(ARG_OUTPUT) {
+            Some(o) => {
+                info!("setting output file to {}", canonicalize(o));
+                Box::new(File::create(o)?)
+            }
+            None => {
+                info!("setting output to STDOUT");
+                Box::new(std::io::stdout())
+            }
+        };
+        writer.write(&af, output.as_mut())
     }
+}
+
+fn canonicalize(file_path: &str) -> String {
+    format!(
+        "{}",
+        fs::canonicalize(&PathBuf::from(file_path))
+            .unwrap()
+            .display()
+    )
 }
