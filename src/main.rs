@@ -16,7 +16,7 @@
 
 mod app;
 
-use app::FrameworkCommand;
+use app::{ExtensionCommand, FrameworkCommand};
 use crusti_app_helper::{AppHelper, Command, LicenseCommand};
 
 fn main() {
@@ -28,6 +28,7 @@ fn main() {
     );
     let commands: Vec<Box<dyn Command>> = vec![
         Box::new(FrameworkCommand::new()),
+        Box::new(ExtensionCommand::new()),
         Box::new(LicenseCommand::new(include_str!("../LICENSE").to_string())),
     ];
     for c in commands {

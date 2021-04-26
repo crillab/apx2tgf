@@ -14,5 +14,63 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+mod extension_command;
+pub(crate) use extension_command::ExtensionCommand;
+
 mod framework_command;
 pub(crate) use framework_command::FrameworkCommand;
+
+use anyhow::{Context, Result};
+use crusti_app_helper::{info, Arg, ArgMatches};
+use fs::File;
+use std::path::PathBuf;
+use std::{fs, io::Write};
+
+const ARG_INPUT: &str = "INPUT";
+const ARG_OUTPUT: &str = "OUTPUT";
+
+pub(crate) fn arg_input<'a>() -> Arg<'a, 'a> {
+    Arg::with_name(ARG_INPUT)
+        .long("input")
+        .short("i")
+        .takes_value(true)
+        .help("sets the APX input file")
+        .required(true)
+}
+
+pub(crate) fn create_input(arg_matches: &ArgMatches<'_>) -> Result<File> {
+    let file_path = arg_matches.value_of(ARG_INPUT).unwrap();
+    info!("reading input file {}", canonicalize(file_path));
+    File::open(file_path).with_context(|| format!(r#"while opening file "{}""#, file_path))
+}
+
+pub(crate) fn arg_output<'a>() -> Arg<'a, 'a> {
+    Arg::with_name(ARG_OUTPUT)
+        .long("output")
+        .short("o")
+        .takes_value(true)
+        .help("sets the TGF output file")
+}
+
+pub(crate) fn create_output(arg_matches: &ArgMatches<'_>) -> Result<Box<dyn Write>> {
+    Ok(match arg_matches.value_of(ARG_OUTPUT) {
+        Some(o) => {
+            let r= Box::new(File::create(o)?);
+            info!("setting output file to {}", canonicalize(o));
+            r
+        }
+        None => {
+            info!("setting output to STDOUT");
+            Box::new(std::io::stdout())
+        }
+    })
+}
+
+pub(crate) fn canonicalize(file_path: &str) -> String {
+    format!(
+        "{}",
+        fs::canonicalize(&PathBuf::from(file_path))
+            .unwrap()
+            .display()
+    )
+}
