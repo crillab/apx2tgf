@@ -82,11 +82,19 @@
 #![warn(missing_doc_code_examples)]
 
 mod aa;
-mod utils;
 
 pub use crate::aa::aa_framework::{AAFramework, Attack};
 pub use crate::aa::arguments::{Argument, ArgumentSet, LabelType};
-pub use crate::aa::io::aspartix_reader::AspartixReader;
-pub use crate::aa::io::aspartix_writer::AspartixWriter;
-pub use crate::aa::io::solutions;
-pub use crate::aa::io::tgf_writer::TGFWriter;
+
+pub use crate::aa::io::AspartixReader;
+pub use crate::aa::io::AspartixSolutionReader;
+pub use crate::aa::io::AspartixSolutionWriter;
+pub use crate::aa::io::AspartixWriter;
+pub use crate::aa::io::SolutionReader;
+pub use crate::aa::io::SolutionWriter;
+pub use crate::aa::io::TGFSolutionReader;
+pub use crate::aa::io::TGFSolutionWriter;
+pub use crate::aa::io::TGFWriter;
+
+mod utils;
+

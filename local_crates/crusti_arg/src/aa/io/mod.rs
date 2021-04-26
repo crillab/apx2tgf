@@ -17,8 +17,19 @@
 // Contributors:
 //   *   CRIL - initial API and implementation
 
-pub(crate) mod aspartix_reader;
-pub(crate) mod aspartix_writer;
-pub mod solutions;
+mod aspartix_reader;
+pub use aspartix_reader::AspartixReader;
 
-pub(crate) mod tgf_writer;
+mod aspartix_writer;
+pub use aspartix_writer::AspartixWriter;
+
+mod solutions;
+pub use solutions::AspartixSolutionReader;
+pub use solutions::AspartixSolutionWriter;
+pub use solutions::SolutionReader;
+pub use solutions::SolutionWriter;
+pub use solutions::TGFSolutionReader;
+pub use solutions::TGFSolutionWriter;
+
+mod tgf_writer;
+pub use tgf_writer::TGFWriter;
