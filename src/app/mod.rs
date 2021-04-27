@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+mod argument_command;
+pub(crate) use argument_command::ArgumentCommand;
+
 mod extension_command;
 pub(crate) use extension_command::ExtensionCommand;
 
@@ -55,7 +58,7 @@ pub(crate) fn arg_output<'a>() -> Arg<'a, 'a> {
 pub(crate) fn create_output(arg_matches: &ArgMatches<'_>) -> Result<Box<dyn Write>> {
     Ok(match arg_matches.value_of(ARG_OUTPUT) {
         Some(o) => {
-            let r= Box::new(File::create(o)?);
+            let r = Box::new(File::create(o)?);
             info!("setting output file to {}", canonicalize(o));
             r
         }
