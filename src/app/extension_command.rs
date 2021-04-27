@@ -67,7 +67,7 @@ impl<'a> Command<'a> for ExtensionCommand {
         let apx_solution_writer = AspartixSolutionWriter::new();
         let apx_labels = tgf_extension
             .iter()
-            .map(|a| af.argument_set().get_argument_by_id(a.id()).label().clone())
+            .map(|a| af.argument_set().get_argument_by_id(*a.label()).label().clone())
             .collect::<Vec<String>>();
         let apx_extension = ArgumentSet::new(&apx_labels)?;
         apx_solution_writer
