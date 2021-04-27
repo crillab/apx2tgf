@@ -174,10 +174,12 @@ impl<'a> AspartixReader<'a> {
             }
             return Err(anyhow!("syntax error in line \"{}\"", l)).with_context(context);
         }
-        match af {
-            Some(a) => Ok(a),
-            None => Ok(AAFramework::new(ArgumentSet::new(&[]).unwrap())),
+        if af.is_none() {
+            af = Some(AAFramework::new(ArgumentSet::new(
+                arg_labels.as_ref().unwrap_or(&vec![]),
+            )?));
         }
+        Ok(af.unwrap())
     }
 
     /// Adds a callback function to call when warnings are raised while parsing an AF.
@@ -396,5 +398,14 @@ mod tests {
                 "argument names beginning or ending by spaces may be ambiguous".to_string()
             )]
         );
+    }
+
+    #[test]
+    fn test_read_only_args() {
+        let instance = "arg(a).\narg(b).\n";
+        let reader = AspartixReader::default();
+        let af = reader.read(&mut instance.as_bytes()).unwrap();
+        assert_eq!(2, af.argument_set().len());
+        assert_eq!(0, af.n_attacks());
     }
 }
