@@ -71,13 +71,13 @@ This can be done by the `extension` command, fed with the input AF (given by the
 me@machine:~/apx2tgf$$ cat ext.tgf 
 [0]
 
-me@machine:~/apx2tgf$$ ./apx2tgf.bin extension -i ./instance.apx -e ./ext.tgf -o ./ext.apx
+me@machine:~/apx2tgf$ ./apx2tgf extension -i ./instance.apx -e ./ext.tgf -o ./ext.apx
 [INFO ] [2021-04-27 11:26:28] apx2tgf 0.1.0
 [INFO ] [2021-04-27 11:26:28] reading input file /home/me/apx2tgf/instance.apx
 [INFO ] [2021-04-27 11:26:28] setting output file to /home/me/apx2tgf/ext.apx
 [INFO ] [2021-04-27 11:26:28] exiting successfully after 2.522048ms
 
-me@machine:~/apx2tgf$$ cat ext.apx 
+me@machine:~/apx2tgf$ cat ext.apx 
 [a0]
 ```
 
